@@ -13,6 +13,7 @@
 import acm.graphics.*;
 import acm.program.*;
 import java.awt.*;
+import java.lang.Math.*;
 
 public class Pyramid extends GraphicsProgram {
 
@@ -26,7 +27,24 @@ public class Pyramid extends GraphicsProgram {
 	private static final int BRICKS_IN_BASE = 14;
 	
 	public void run() {
-		/* You fill this in. */
+		int y_dimen = getHeight(); 
+		int x_dimen = getWidth();
+		
+		for (int i = BRICKS_IN_BASE; i>0; i--){
+			if (BRICKS_IN_BASE % 2 == 0){
+				laybricks (i, (x_dimen/2)-(i/2)*BRICK_WIDTH, (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
+			}else {
+				laybricks (i, (x_dimen/2)-((i/2)*BRICK_WIDTH)-(BRICK_WIDTH/2), (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
+			}
+		}		
+	}
+	
+	private void laybricks (int numOfBricks, int startXPos, int startYPos){
+		int startX = startXPos;
+		for (int i = numOfBricks; i > 0; i--){
+			add (new GRect(startX, startYPos, BRICK_WIDTH, BRICK_HEIGHT));
+			startX += BRICK_WIDTH;
+		}
 	}
 }
 
