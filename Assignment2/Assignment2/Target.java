@@ -24,8 +24,6 @@ public class Target extends GraphicsProgram {
 		drawRedCircle(x_dimen/2 - RADIUS_LARGE, y_dimen/2 - RADIUS_LARGE, RADIUS_LARGE*2, RADIUS_LARGE*2);
 		drawWhiteCircle(x_dimen/2 - MED_SCALING* RADIUS_LARGE, y_dimen/2 - MED_SCALING*RADIUS_LARGE, MED_SCALING*RADIUS_LARGE*2, MED_SCALING*RADIUS_LARGE*2);
 		drawRedCircle(x_dimen/2 - SMALL_SCALING* RADIUS_LARGE, y_dimen/2 - SMALL_SCALING*RADIUS_LARGE, SMALL_SCALING*RADIUS_LARGE*2, SMALL_SCALING*RADIUS_LARGE*2);
-		
-		
 	}
 	
 	private void drawRedCircle (double xPos, double yPos, double height, double width){

@@ -27,8 +27,8 @@ public class Pyramid extends GraphicsProgram {
 	private static final int BRICKS_IN_BASE = 14;
 	
 	public void run() {
-		int y_dimen = getHeight(); 
-		int x_dimen = getWidth();
+		double y_dimen = getHeight(); 
+		double x_dimen = getWidth();
 		
 		for (int i = BRICKS_IN_BASE; i>0; i--){
 			if (BRICKS_IN_BASE % 2 == 0){
@@ -39,8 +39,8 @@ public class Pyramid extends GraphicsProgram {
 		}		
 	}
 	
-	private void laybricks (int numOfBricks, int startXPos, int startYPos){
-		int startX = startXPos;
+	private void laybricks (int numOfBricks, double startXPos, double startYPos){
+		double startX = startXPos;
 		for (int i = numOfBricks; i > 0; i--){
 			add (new GRect(startX, startYPos, BRICK_WIDTH, BRICK_HEIGHT));
 			startX += BRICK_WIDTH;
