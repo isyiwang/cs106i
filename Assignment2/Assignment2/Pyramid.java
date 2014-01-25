@@ -31,7 +31,7 @@ public class Pyramid extends GraphicsProgram {
 		double x_dimen = getWidth();
 		
 		for (int i = BRICKS_IN_BASE; i>0; i--){
-			if (BRICKS_IN_BASE % 2 == 0){
+			if (i % 2 == 0){
 				laybricks (i, (x_dimen/2)-(i/2)*BRICK_WIDTH, (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
 			}else {
 				laybricks (i, (x_dimen/2)-((i/2)*BRICK_WIDTH)-(BRICK_WIDTH/2), (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
