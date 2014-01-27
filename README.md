@@ -1,5 +1,13 @@
 cs106i
 ======
+Downloading Eclipse
+-------------------
+The course uses Eclipse with the Stanford library to code all section problems and assignments. Visit http://www.stanford.edu/class/cs106a/software/ to get the latest version.
+
+Stanford ACM Javadocs
+---------------------
+Throughout the course, you'll be using Stanford's ACM library: http://www-cs-faculty.stanford.edu/~eroberts//jtf/javadoc/student/index.html
+
 Committing changes
 ------------------
 While you're working on your code, it's important to save your state at various points so you can go back in case you get your code in an unworking state. Here's a simple workflow for saving your code:
