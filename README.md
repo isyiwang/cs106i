@@ -1,5 +1,9 @@
 cs106i
 ======
+Lectures + Handouts
+--------
+You can view all CS 106A lectures at http://www.youtube.com/watch?v=KkMDCCdjyW8&list=PL6C11012B1B464EC5.  Lecture and section materials can be found at http://see.stanford.edu/see/materials/icspmcs106a/handouts.aspx
+
 Downloading Eclipse
 -------------------
 The course uses Eclipse with the Stanford library to code all section problems and assignments. Visit http://www.stanford.edu/class/cs106a/software/ to get the latest version.
@@ -15,7 +19,7 @@ While you're working on your code, it's important to save your state at various 
 ```
 git add FILES_HERE
 ```
-You don't necessarily have to add all your files + changes to a commit.  Choose which files you'd like to save state for using this command.
+You don't necessarily have to add all your files + changes to a commit.  Choose which files you'd like to save state for using this command.  Or you can just add everything with 'git add .'
 
 ```
 git commit -m "YOUR COMMIT MESSAGE HERE"
