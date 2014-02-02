@@ -13,8 +13,8 @@ public class Hailstone extends ConsoleProgram {
 		int input; 
 		input = readInt ("Enter a Number: ");
 		int iterations = 0;
-		while (input != 1){
-			if (input % 2 == 0){
+		while (input != 1) {
+			if (input % 2 == 0) {
 				println (input + " is even, so I take half: " + input/2);
 				input /= 2;
 			} else {
@@ -24,7 +24,6 @@ public class Hailstone extends ConsoleProgram {
 			iterations ++;
 		}
 		println ("The process took " + iterations + " to reach 1");
-
 	}
 }
 

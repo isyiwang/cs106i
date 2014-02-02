@@ -30,16 +30,16 @@ public class Pyramid extends GraphicsProgram {
 		double y_dimen = getHeight(); 
 		double x_dimen = getWidth();
 		
-		for (int i = BRICKS_IN_BASE; i>0; i--){
-			if (i % 2 == 0){
+		for (int i = BRICKS_IN_BASE; i>0; i--) {
+			if (i % 2 == 0) {
 				laybricks (i, (x_dimen/2)-(i/2)*BRICK_WIDTH, (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
-			}else {
+			} else {
 				laybricks (i, (x_dimen/2)-((i/2)*BRICK_WIDTH)-(BRICK_WIDTH/2), (y_dimen)-((BRICKS_IN_BASE-i)+1)*BRICK_HEIGHT);
 			}
 		}		
 	}
 	
-	private void laybricks (int numOfBricks, double startXPos, double startYPos){
+	private void laybricks (int numOfBricks, double startXPos, double startYPos) {
 		double startX = startXPos;
 		for (int i = numOfBricks; i > 0; i--){
 			add (new GRect(startX, startYPos, BRICK_WIDTH, BRICK_HEIGHT));

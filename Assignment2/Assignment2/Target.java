@@ -26,17 +26,19 @@ public class Target extends GraphicsProgram {
 		drawRedCircle(x_dimen/2 - SMALL_SCALING* RADIUS_LARGE, y_dimen/2 - SMALL_SCALING*RADIUS_LARGE, SMALL_SCALING*RADIUS_LARGE*2, SMALL_SCALING*RADIUS_LARGE*2);
 	}
 	
-	private void drawRedCircle (double xPos, double yPos, double height, double width){
+	private void drawRedCircle (double xPos, double yPos, double height, double width) {
 		GOval red_circ = new GOval(xPos, yPos, height, width);
 		red_circ.setFilled(true);
 		red_circ.setFillColor(Color.RED);
+		red_circ.setColor(Color.RED);
 		add(red_circ);
 	}
 	
-	private void drawWhiteCircle (double xPos, double yPos, double height, double width){
+	private void drawWhiteCircle (double xPos, double yPos, double height, double width) {
 		GOval white_circ = new GOval(xPos, yPos, height, width);
 		white_circ.setFilled(true);
 		white_circ.setFillColor(Color.WHITE);
+		white_circ.setColor(Color.WHITE);
 		add(white_circ);
 	}
 }

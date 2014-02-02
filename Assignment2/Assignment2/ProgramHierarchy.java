@@ -30,7 +30,7 @@ public class ProgramHierarchy extends GraphicsProgram {
 		drawLine ((xDimen/2), (yDimen/4) + HEIGHT, (3*xDimen/4), (2*yDimen/4));
 	}
 	
-	private void drawBox (double xPos, double yPos, double width, double height, String msg){
+	private void drawBox (double xPos, double yPos, double width, double height, String msg) {
 		GRect box = new GRect (xPos, yPos, width, height);
 		GLabel label = new GLabel(msg, xPos, yPos);
 		double labelWidth = label.getWidth();
@@ -41,7 +41,7 @@ public class ProgramHierarchy extends GraphicsProgram {
 		add(label);
 	}
 	
-	private void drawLine (double x1, double y1, double x2, double y2){
+	private void drawLine (double x1, double y1, double x2, double y2) {
 		GLine line = new GLine (x1, y1, x2, y2);
 		add (line);
 	}
