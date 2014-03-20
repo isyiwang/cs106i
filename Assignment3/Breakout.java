@@ -15,6 +15,8 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import com.sun.xml.internal.bind.v2.runtime.Coordinator;
+
 public class Breakout extends GraphicsProgram {
 
 	/** Width and height of application window in pixels */
@@ -56,16 +58,146 @@ public class Breakout extends GraphicsProgram {
 
 	/** Number of turns */
 	private static final int NTURNS = 3;
+	
+	private static final int DELAY = 10;
 
 	/* Method: init() */
 	/** Sets up the Breakout program. */
 	public void init() {
 		/* You fill this in, along with any subsidiary methods */
+		addMouseListeners();
 	}
 
 	/* Method: run() */
 	/** Runs the Breakout program. */
 	public void run() {
 		/* You fill this in, along with any subsidiary methods */
+		setup();	
+		runGame();
 	}
+
+	private void setup(){
+		totalBricks = NBRICKS_PER_ROW * NBRICK_ROWS;
+		setSize(WIDTH, HEIGHT);
+		layBricks();
+		layPaddle();
+		createBall();
+	}
+	
+	public void mouseClicked(MouseEvent e){
+
+	}
+	
+	public void mouseMoved (MouseEvent e){
+		if (e.getX() <= WIDTH - PADDLE_WIDTH)
+		{
+			paddle.setLocation (e.getX(), (HEIGHT - PADDLE_Y_OFFSET));		
+		}
+
+	}
+	
+	private void layBricks(){
+		int xPos = 0;
+		int yPos = BRICK_Y_OFFSET;
+		int x = NBRICK_ROWS;
+
+		Color brickColor = Color.BLACK;
+		
+		while (x > 0){
+			if (x%2 == 0 && brickColor == Color.BLACK)
+				brickColor = Color.RED;
+			else if ((x%2 == 0) && (brickColor == Color.RED))
+				brickColor = Color.ORANGE;
+			else if (x%2 == 0 && brickColor == Color.ORANGE)
+				brickColor = Color.YELLOW;
+			else if (x%2 == 0 && brickColor == Color.YELLOW)
+				brickColor = Color.GREEN;
+			else if (x%2 == 0 && brickColor == Color.GREEN)
+				brickColor = Color.CYAN;
+			else if (x%2 == 0 && brickColor == Color.CYAN)
+				brickColor = Color.RED;
+			
+			for (int i = NBRICKS_PER_ROW; i > 0; i --){
+				GRect brick = new GRect(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT);
+				brick.setFilled(true);		
+				brick.setFillColor(brickColor);
+				brick.setColor(brickColor);
+				add(brick);
+				xPos += (BRICK_WIDTH + BRICK_SEP);
+			}
+			xPos = 0;
+			yPos += (BRICK_HEIGHT + BRICK_SEP);
+			x -= 1;
+		}
+		}
+		
+	private void layPaddle(){
+		int xPos = (WIDTH - PADDLE_WIDTH)/2;
+		int yPos = (HEIGHT - PADDLE_Y_OFFSET);
+		paddle = new GRect (xPos, yPos, PADDLE_WIDTH, PADDLE_HEIGHT);
+		paddle.setFilled(true);
+		paddle.setFillColor(Color.BLACK);
+		paddle.setColor(Color.BLACK);
+		add(paddle);
+	}
+	
+	private void createBall(){
+		ball = new GOval((WIDTH-2*BALL_RADIUS)/2,(HEIGHT-PADDLE_Y_OFFSET-2*BALL_RADIUS),2*BALL_RADIUS,2*BALL_RADIUS);
+		ball.setFilled(true);
+		ball.setFillColor(Color.BLACK);
+		ball.setColor(Color.BLACK);
+		add(ball);
+	}
+	
+	private void runGame(){
+		vx = rgen.nextDouble (1.0, 3.0);
+		vy = rgen.nextDouble (1.0, 3.0);
+		vy = -vy;
+
+		while (ball.getY() <= HEIGHT)
+		{
+			moveBall();
+			checkForCollision();
+			if (totalBricks == 0){
+				break;
+			}
+			pause(DELAY);
+		}
+		
+	}
+	
+	private void moveBall() {
+		ball.move(vx, vy);
+	}
+	private void checkForCollision(){
+		//check for side walls
+		if(ball.getX() + 2*BALL_RADIUS > WIDTH || ball.getX() < 0){
+			vx = -vx;
+		}
+		//check for top wall 
+		if(ball.getY() < 0){
+			vy = -vy;
+		}
+		//check for paddle
+		if (((getElementAt(ball.getX(), ball.getY()+2*BALL_RADIUS) == paddle)
+					|| (getElementAt(ball.getX()+2*BALL_RADIUS, ball.getY()+2*BALL_RADIUS) == paddle))){
+			vy = -vy;
+		}
+		//check for brick
+		else if ((getElementAt(ball.getX(), ball.getY()) != null)){
+			remove (getElementAt(ball.getX(), ball.getY()));
+			vy = -vy;
+			totalBricks -= 1; //untested
+		}
+		else if ()
+	}
+
+	
+
+	private int totalBricks;
+	private GRect paddle;
+	private GOval ball;
+	private RandomGenerator rgen = RandomGenerator.getInstance();
+	private double vx, vy;
+
 }
