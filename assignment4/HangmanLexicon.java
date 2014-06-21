@@ -22,10 +22,10 @@ public class HangmanLexicon {
 		String a = null;
 		try {
 			BufferedReader in  = new BufferedReader(new FileReader("ShorterLexicon.txt"));
-			while ((a = in.readLine()) != null){
+			while((a = in.readLine()) != null){
 				strList.add(a);
 			}
-	    } catch (Exception e) {
+	    } catch(Exception e) {
 	        throw new ExceptionInInitializerError(e);
 	    }
 	    

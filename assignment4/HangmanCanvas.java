@@ -17,7 +17,8 @@ public class HangmanCanvas extends GCanvas {
 	private GLine bodyLine = new GLine(0,0,0,0);
 	private GOval headOval = new GOval (HEAD_RADIUS, HEAD_RADIUS);
 	private GLabel wordLabel = new GLabel("",0,0);
-	private GLabel guessLabel = new GLabel ("",0,0);
+	private GLabel guessLabel = new GLabel("",0,0);
+	private GLabel guessHeader = new GLabel("GUESSES: ",0,0);
 	private double xPos;
 	private double yPos;
 
@@ -34,10 +35,12 @@ public class HangmanCanvas extends GCanvas {
 		canvasWidth = getWidth();
 		xPos = canvasWidth/X_DIVIDER; 
 		yPos = (canvasHeight - SCAFFOLD_HEIGHT)/Y_DIVIDER;
+		guessHeader.move(xPos - guessHeader.getWidth(), yPos + SCAFFOLD_HEIGHT + 2*OFFSET);
 		guessLabel.move(xPos, yPos + SCAFFOLD_HEIGHT + 2*OFFSET);
 		wordLabel.move(xPos, yPos + SCAFFOLD_HEIGHT + OFFSET);
 		headOval.move(xPos + BEAM_LENGTH - (HEAD_RADIUS/2), yPos + ROPE_LENGTH);
 
+		add(guessHeader);
 	}
 
 	private void drawScaffold(){
@@ -128,7 +131,7 @@ public class HangmanCanvas extends GCanvas {
 		add(bodyLine);
 	}
 	
-	private void drawLimb (double xPosition, double yPosition, double xPosition2, double yPosition2, int constantLength){
+	private void drawLimb(double xPosition, double yPosition, double xPosition2, double yPosition2, int constantLength){
 		GLine upperLimb = new GLine(xPosition, yPosition, xPosition2, yPosition2); 
 		GLine lowerLimb = new GLine(xPosition2, yPosition2, xPosition2, yPosition2 + constantLength);
 		add(upperLimb);
@@ -141,12 +144,12 @@ public class HangmanCanvas extends GCanvas {
 	}
 	
 /* Constants for the simple version of the picture (in pixels) */
-	private static final int SCAFFOLD_HEIGHT = 200;
+	private static final int SCAFFOLD_HEIGHT = 360;
 	private static final int BEAM_LENGTH = 144;
 	private static final int ROPE_LENGTH = 18;
-	private static final int HEAD_RADIUS = 30;
+	private static final int HEAD_RADIUS = 36;
 	private static final int BODY_LENGTH = 144;
-	private static final int ARM_OFFSET_FROM_HEAD = 100;
+	private static final int ARM_OFFSET_FROM_HEAD = 28;
 	private static final int UPPER_ARM_LENGTH = 72;
 	private static final int LOWER_ARM_LENGTH = 44;
 	private static final int HIP_WIDTH = 36;
