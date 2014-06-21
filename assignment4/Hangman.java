@@ -71,6 +71,7 @@ public class Hangman extends ConsoleProgram {
     private void getGuess(){
     	String playerInput = readLine("Your guess: ");
 		characterGuess = formatGuess(playerInput);
+
     	
 		//Checks for valid characters 
     	while(!validEntry(characterGuess)){
@@ -89,8 +90,12 @@ public class Hangman extends ConsoleProgram {
     
     private char formatGuess(String input){
     	char ch;
-    	ch = input.charAt(0);
-    	ch = checkCase(ch);
+    	if (input.equals("")){
+    		ch = '!';
+    	} else {
+	    	ch = input.charAt(0);
+	    	ch = checkCase(ch);
+    	}
     	return ch;
     }
     
@@ -111,7 +116,7 @@ public class Hangman extends ConsoleProgram {
     private boolean validEntry(char ch){
     	if((ch >= 'a' && ch <= 'z') ||(ch >= 'A' && ch <= 'Z')){
     		return true;
-    	} else {
+    	} else{
     		return false;
     	}
     }
