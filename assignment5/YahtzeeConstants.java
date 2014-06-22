@@ -52,4 +52,5 @@ public interface YahtzeeConstants {
 	public static final int DICE_VALUE_FOUR = 4;
 	public static final int DICE_VALUE_FIVE = 5;
 	public static final int DICE_VALUE_SIX = 6;
+	public static final boolean CHEAT_MODE = true;
 }

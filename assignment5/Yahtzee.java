@@ -54,8 +54,15 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	}
 		
 	private void displayFirstRoll(){
-		for(int i = 0; i < N_DICE; i++){
-			diceValues[i] = rgen.nextInt(1,6);
+		if(!CHEAT_MODE){
+			for(int i = 0; i < N_DICE; i++){
+				diceValues[i] = rgen.nextInt(1,6);
+			}
+		} else{
+			for(int i = 0; i < N_DICE; i++){
+				IODialog dialog = getDialog();
+				diceValues[i] = dialog.readInt("Dice Value " + i + " : ");
+			}
 		}
 		display.displayDice(diceValues);
 	}
@@ -75,6 +82,12 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private void keepScore(int player){
 		int category = display.waitForPlayerToSelectCategory();
 		bucketizeRolls(diceValues);
+		
+		if(CHEAT_MODE){
+			IODialog dialog = getDialog();
+			//print out bucketized numberBucket
+		}
+		
 		/*if (checkCategory(category)){
 			//calculate the score 
 			//update the score
