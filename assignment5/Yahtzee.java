@@ -31,7 +31,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	
 	private void initializeGame(){
 		diceValues = new int[N_DICE];
-		
+		numberBucket = new int[TOTAL_DICE_SIDES];
 		//DEBUG 
 		diceDebug = new int[N_DICE];
 		for (int i = 0; i < N_DICE; i++){
@@ -43,6 +43,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		for (int i = 1; i <= nPlayers; i++){
 			initialRoll(i);
 			secondAndThirdRoll(i);
+			keepScore(i);
 		}
 		display.displayDice(diceDebug);
 	}
@@ -71,6 +72,54 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 	}
 	
+	private void keepScore(int player){
+		int category = display.waitForPlayerToSelectCategory();
+		bucketizeRolls(diceValues);
+		/*if (checkCategory(category)){
+			//calculate the score 
+			//update the score
+		} else{
+			display.updateScorecard(category, player, 0);
+		}	*/	      
+	}
+	
+	private void bucketizeRolls(int[] diceNumbers){
+		clearNumberBucket(numberBucket);
+		for(int i = 0; i < N_DICE; i++){
+			switch(diceNumbers[i]){
+			case DICE_VALUE_ONE:
+				numberBucket[0] = numberBucket[0] + 1;
+				break;
+			case DICE_VALUE_TWO:
+				numberBucket[1] = numberBucket[1] + 1;
+				break;
+			case DICE_VALUE_THREE:
+				numberBucket[2] = numberBucket[2] + 1;
+				break;
+			case DICE_VALUE_FOUR:
+				numberBucket[3] = numberBucket[3] + 1;
+				break;
+			case DICE_VALUE_FIVE:
+				numberBucket[4] = numberBucket[4] + 1;
+				break;
+			case DICE_VALUE_SIX:
+				numberBucket[5] = numberBucket[5] + 1;
+				break;
+				default: break;
+			}
+		}
+	}
+	
+	private void clearNumberBucket(int[] bucket){
+		for(int i = 0; i < TOTAL_DICE_SIDES; i++){
+			bucket[i] = 0;
+		}
+	}
+	
+	private boolean checkCategory(int categoryInput){
+		return true;
+	}
+	
 /* Private instance variables */
 	private int nPlayers;
 	private String[] playerNames;
@@ -78,5 +127,6 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private RandomGenerator rgen = new RandomGenerator();
 	private int[] diceValues;
 	private int[] diceDebug;
+	private int[] numberBucket;
 
 }

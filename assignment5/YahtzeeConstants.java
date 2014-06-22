@@ -45,4 +45,11 @@ public interface YahtzeeConstants {
 	public static final int TOTAL = 17;
   
 	public static final int ALLOWED_ROLLS = 3;
+	public static final int TOTAL_DICE_SIDES = 6;
+	public static final int DICE_VALUE_ONE = 1;
+	public static final int DICE_VALUE_TWO = 2;
+	public static final int DICE_VALUE_THREE = 3;
+	public static final int DICE_VALUE_FOUR = 4;
+	public static final int DICE_VALUE_FIVE = 5;
+	public static final int DICE_VALUE_SIX = 6;
 }
