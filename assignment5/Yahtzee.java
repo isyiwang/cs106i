@@ -148,7 +148,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			return threeOfKind;
 		case FOUR_OF_A_KIND:
 			for (int i = 0; i < TOTAL_DICE_SIDES;i++){
-				if (numberBucket[i] == FOUR_ROLLS) return true;
+				if (numberBucket[i] >= FOUR_ROLLS) return true;
 			}
 				return false;
 		case FULL_HOUSE:
@@ -169,7 +169,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	
 	private boolean checkThreeOfKind(int[] bucketizedNums){
 		for (int i = 0; i < TOTAL_DICE_SIDES;i++){
-			if (numberBucket[i] == THREE_ROLLS) return true;
+			if (numberBucket[i] >= THREE_ROLLS) return true;
 		}
 		return false;
 	}
