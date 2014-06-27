@@ -83,17 +83,16 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		int category = display.waitForPlayerToSelectCategory();
 		bucketizeRolls(diceValues);
 		
-		if(CHEAT_MODE){
-			IODialog dialog = getDialog();
-			//print out bucketized numberBucket
-		}
+	
 		
-		/*if (checkCategory(category)){
+		if (checkCategory(category)){
 			//calculate the score 
+			
 			//update the score
+			display.updateScorecard(category, player, calculateScore(category));
 		} else{
 			display.updateScorecard(category, player, 0);
-		}	*/	      
+		}      
 	}
 	
 	private void bucketizeRolls(int[] diceNumbers){
@@ -130,7 +129,76 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	}
 	
 	private boolean checkCategory(int categoryInput){
-		return true;
+		boolean threeOfKind = false;
+		
+		switch (categoryInput){
+		case ONES: 
+		case TWOS:
+		case THREES:
+		case FOURS:
+		case FIVES: 
+		case SIXES: 
+			if (numberBucket[categoryInput - 1] >= 1){
+				return true;
+			} else {
+				return false;
+			}
+		case THREE_OF_A_KIND:
+			threeOfKind = checkThreeOfKind(numberBucket);
+			return threeOfKind;
+		case FOUR_OF_A_KIND:
+			for (int i = 0; i < TOTAL_DICE_SIDES;i++){
+				if (numberBucket[i] == FOUR_ROLLS) return true;
+			}
+				return false;
+		case FULL_HOUSE:
+			threeOfKind = checkThreeOfKind(numberBucket);
+			for (int i = 0; i < TOTAL_DICE_SIDES;i++){
+				if (numberBucket[i] == TWO_ROLLS && threeOfKind) return true;
+			}
+			return false;
+		case SMALL_STRAIGHT:
+		case LARGE_STRAIGHT: 
+		case YAHTZEE: 
+			default: 
+				return false;
+			
+		}
+
+	}
+	
+	private boolean checkThreeOfKind(int[] bucketizedNums){
+		for (int i = 0; i < TOTAL_DICE_SIDES;i++){
+			if (numberBucket[i] == THREE_ROLLS) return true;
+		}
+		return false;
+	}
+	
+	private int calculateScore(int categoryInput){
+		int score = 0;
+			switch (categoryInput){
+		case ONES: 
+		case TWOS:
+		case THREES:
+		case FOURS:
+		case FIVES: 
+		case SIXES: 
+			return numberBucket[categoryInput - 1] * categoryInput;
+		case THREE_OF_A_KIND:
+		case FOUR_OF_A_KIND:
+			for (int i = 0; i < N_DICE; i++){
+				score = diceValues[i] + score; 
+			}
+			return score;
+		case FULL_HOUSE:
+			return 25;
+		case SMALL_STRAIGHT:
+		case LARGE_STRAIGHT: 
+		case YAHTZEE: 
+			default: 
+				return 0;
+			
+		}
 	}
 	
 /* Private instance variables */
