@@ -144,7 +144,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 				return false;
 			}
 		case THREE_OF_A_KIND:
-			threeOfKind = checkThreeOfKind(numberBucket);
+			threeOfKind = checkThreeOfKind();
 			return threeOfKind;
 		case FOUR_OF_A_KIND:
 			for (int i = 0; i < TOTAL_DICE_SIDES;i++){
@@ -152,14 +152,16 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			}
 				return false;
 		case FULL_HOUSE:
-			threeOfKind = checkThreeOfKind(numberBucket);
+			threeOfKind = checkThreeOfKind();
 			for (int i = 0; i < TOTAL_DICE_SIDES;i++){
 				if (numberBucket[i] == TWO_ROLLS && threeOfKind) return true;
 			}
 			return false;
 		case SMALL_STRAIGHT:
 		case LARGE_STRAIGHT: 
+			return checkStraight(categoryInput);
 		case YAHTZEE: 
+			return checkYahtzee();
 			default: 
 				return false;
 			
@@ -167,9 +169,27 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 
 	}
 	
-	private boolean checkThreeOfKind(int[] bucketizedNums){
-		for (int i = 0; i < TOTAL_DICE_SIDES;i++){
+	private boolean checkThreeOfKind(){
+		for(int i = 0; i < TOTAL_DICE_SIDES;i++){
 			if (numberBucket[i] >= THREE_ROLLS) return true;
+		}
+		return false;
+	}
+	private boolean checkStraight(int categoryInput){
+		if(categoryInput == SMALL_STRAIGHT){
+			if(numberBucket[0] == 0 || numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
+			if(numberBucket[0] == 0 && numberBucket[1] == 0) return true;
+			if(numberBucket[0] == 0 && numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
+			if(numberBucket[TOTAL_DICE_SIDES-1] == 0 && numberBucket[TOTAL_DICE_SIDES-2] == 0) return true;
+		} else if(categoryInput == LARGE_STRAIGHT){
+			if(numberBucket[0] == 0 || numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
+		}
+		return false;
+	}
+	
+	private boolean checkYahtzee(){
+		for(int i = 0; i < TOTAL_DICE_SIDES; i++){
+			if(numberBucket[i] == 5) return true;
 		}
 		return false;
 	}
@@ -193,8 +213,11 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		case FULL_HOUSE:
 			return 25;
 		case SMALL_STRAIGHT:
+			return 30;
 		case LARGE_STRAIGHT: 
+			return 40;
 		case YAHTZEE: 
+			return 50;
 			default: 
 				return 0;
 			
