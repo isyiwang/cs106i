@@ -9,11 +9,11 @@ import acm.program.*;
 import acm.util.*;
 
 public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
-	
+
 	public static void main(String[] args) {
 		new Yahtzee().start(args);
 	}
-	
+
 	public void run() {
 		IODialog dialog = getDialog();
 		nPlayers = dialog.readInt("Enter number of players");
@@ -28,15 +28,18 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		initializeGame();
 		playGame();
 	}
-	
+
 	private void initializeGame(){
 		diceValues = new int[N_DICE];
 		numberBucket = new int[TOTAL_DICE_SIDES];
+		upperScore = new int[MAX_PLAYERS];;
+		lowerScore = new int[MAX_PLAYERS];
 		//DEBUG 
 		diceDebug = new int[N_DICE];
 		for (int i = 0; i < N_DICE; i++){
 			diceDebug[i] = 5;
 		}
+		
 	}
 
 	private void playGame() {
@@ -47,12 +50,12 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 		display.displayDice(diceDebug);
 	}
-	
+
 	private void initialRoll(int player){
 		display.waitForPlayerToClickRoll(player);
 		displayFirstRoll();
 	}
-		
+
 	private void displayFirstRoll(){
 		if(!CHEAT_MODE){
 			for(int i = 0; i < N_DICE; i++){
@@ -66,7 +69,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 		display.displayDice(diceValues);
 	}
-	
+
 	private void secondAndThirdRoll(int player){
 		for(int roll = 0; roll < (ALLOWED_ROLLS - 1); roll++){
 			display.waitForPlayerToSelectDice();
@@ -78,23 +81,46 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			display.displayDice(diceValues);
 		}
 	}
-	
+
 	private void keepScore(int player){
-		int category = display.waitForPlayerToSelectCategory();
+		int category = 0;
+		category = display.waitForPlayerToSelectCategory();
+		while(!categoryValid(category)){
+			display.printMessage("Invalid Category");
+			category = display.waitForPlayerToSelectCategory();
+		}
 		bucketizeRolls(diceValues);
-		
-	
-		
+
+
+
 		if (checkCategory(category)){
 			//calculate the score 
-			
 			//update the score
-			display.updateScorecard(category, player, calculateScore(category));
+			int score = calculateScore(category);
+			display.updateScorecard(category, player, score);
+			//debug: update scorecard for TOTALs category
+			if(category <= SIXES){
+				//update lower score
+				upperScore[player-1] += score; 
+				display.updateScorecard(UPPER_SCORE, player, upperScore[player-1]);
+			} else if(category <= CHANCE){
+				//update upper score 
+				lowerScore[player-1] += score;
+				display.updateScorecard(LOWER_SCORE, player, lowerScore[player-1]);
+			}
+			//update total score
 		} else{
 			display.updateScorecard(category, player, 0);
 		}      
 	}
-	
+
+	private boolean categoryValid(int categoryInput){
+		if(categoryInput < ONES || categoryInput == UPPER_SCORE || categoryInput == UPPER_BONUS
+				|| categoryInput == LOWER_SCORE || categoryInput == TOTAL) return false;
+		
+		// debug: need to check if category is alrady selected or not!
+		return true;
+	}
 	private void bucketizeRolls(int[] diceNumbers){
 		clearNumberBucket(numberBucket);
 		for(int i = 0; i < N_DICE; i++){
@@ -121,16 +147,16 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			}
 		}
 	}
-	
+
 	private void clearNumberBucket(int[] bucket){
 		for(int i = 0; i < TOTAL_DICE_SIDES; i++){
 			bucket[i] = 0;
 		}
 	}
-	
+
 	private boolean checkCategory(int categoryInput){
 		boolean threeOfKind = false;
-		
+
 		switch (categoryInput){
 		case ONES: 
 		case TWOS:
@@ -162,13 +188,15 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			return checkStraight(categoryInput);
 		case YAHTZEE: 
 			return checkYahtzee();
+		case CHANCE:
+			return true;
 			default: 
 				return false;
-			
+
 		}
 
 	}
-	
+
 	private boolean checkThreeOfKind(){
 		for(int i = 0; i < TOTAL_DICE_SIDES;i++){
 			if (numberBucket[i] >= THREE_ROLLS) return true;
@@ -186,14 +214,14 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 		return false;
 	}
-	
+
 	private boolean checkYahtzee(){
 		for(int i = 0; i < TOTAL_DICE_SIDES; i++){
 			if(numberBucket[i] == 5) return true;
 		}
 		return false;
 	}
-	
+
 	private int calculateScore(int categoryInput){
 		int score = 0;
 			switch (categoryInput){
@@ -218,12 +246,23 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			return 40;
 		case YAHTZEE: 
 			return 50;
+		case CHANCE:
+			return calculateChanceScore();
 			default: 
 				return 0;
-			
+
 		}
+			
+			
 	}
-	
+
+	private int calculateChanceScore(){
+		int sum = 0;
+		for(int i = 0; i < TOTAL_DICE_SIDES; i++){
+			sum = (numberBucket[i] * (i+1)) + sum;
+		}
+		return sum;
+	}
 /* Private instance variables */
 	private int nPlayers;
 	private String[] playerNames;
@@ -232,5 +271,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private int[] diceValues;
 	private int[] diceDebug;
 	private int[] numberBucket;
+	private int[] upperScore;
+	private int[] lowerScore;
 
 }
