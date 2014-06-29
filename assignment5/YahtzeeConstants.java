@@ -56,4 +56,7 @@ public interface YahtzeeConstants {
 	public static final int THREE_ROLLS = 3;
 	public static final int FOUR_ROLLS = 4;
 	public static final int TWO_ROLLS = 2;
+	public static final int NUMBER_OF_TURNS = 13;
+	public static final int BONUS_SCORE = 35;
+	public static final int BONUS_THRESHOLD = 63;
 }

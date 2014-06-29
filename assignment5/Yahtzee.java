@@ -34,19 +34,22 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		numberBucket = new int[TOTAL_DICE_SIDES];
 		upperScore = new int[MAX_PLAYERS];;
 		lowerScore = new int[MAX_PLAYERS];
+		bonusScore = new int[MAX_PLAYERS];
+		usedCategories = new boolean[MAX_PLAYERS][TOTAL];
 		//DEBUG 
 		diceDebug = new int[N_DICE];
 		for (int i = 0; i < N_DICE; i++){
 			diceDebug[i] = 5;
 		}
-		
 	}
 
 	private void playGame() {
-		for (int i = 1; i <= nPlayers; i++){
-			initialRoll(i);
-			secondAndThirdRoll(i);
-			keepScore(i);
+		for(int turns = 0; turns < NUMBER_OF_TURNS; turns++){
+			for(int i = 1; i <= nPlayers; i++){
+				initialRoll(i);
+				secondAndThirdRoll(i);
+				keepScore(i);
+			}
 		}
 		display.displayDice(diceDebug);
 	}
@@ -85,13 +88,12 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private void keepScore(int player){
 		int category = 0;
 		category = display.waitForPlayerToSelectCategory();
-		while(!categoryValid(category)){
+		while(!categoryValid(category, player)){
 			display.printMessage("Invalid Category");
 			category = display.waitForPlayerToSelectCategory();
 		}
+		setCategoryUsed(category, player);
 		bucketizeRolls(diceValues);
-
-
 
 		if (checkCategory(category)){
 			//calculate the score 
@@ -106,28 +108,38 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			} else if(category <= CHANCE){
 				//update upper score 
 				lowerScore[player-1] += score;
-				
 			}
-			//update total score
+			//check for bonus score
+			if(upperScore[player-1] >= BONUS_THRESHOLD){
+				bonusScore[player-1] = BONUS_SCORE;
+			}
 		} else{
 			display.updateScorecard(category, player, 0);
 		}      
 		displayScores(player);
-
 	}
 
 	private void displayScores(int playerInput){
 		display.updateScorecard(UPPER_SCORE, playerInput, upperScore[playerInput-1]);
 		display.updateScorecard(LOWER_SCORE, playerInput, lowerScore[playerInput-1]);
-		display.updateScorecard(TOTAL, playerInput, lowerScore[playerInput-1]+upperScore[playerInput-1]);
+		display.updateScorecard(TOTAL, playerInput, lowerScore[playerInput-1]+upperScore[playerInput-1]+bonusScore[playerInput-1]);
+		if(bonusScore[playerInput-1] == 35){
+			display.updateScorecard(UPPER_BONUS, playerInput, bonusScore[playerInput-1]);
+		}
 	}
-	private boolean categoryValid(int categoryInput){
+	
+	private boolean categoryValid(int categoryInput, int playerInput){
 		if(categoryInput < ONES || categoryInput == UPPER_SCORE || categoryInput == UPPER_BONUS
 				|| categoryInput == LOWER_SCORE || categoryInput == TOTAL) return false;
 		
 		// debug: need to check if category is alrady selected or not!
+		if (usedCategories[playerInput-1][categoryInput-1] == true) return false;		
 		return true;
 	}
+	private void setCategoryUsed(int categoryInput, int playerInput){
+		usedCategories[playerInput-1][categoryInput-1] = true;
+	}
+	
 	private void bucketizeRolls(int[] diceNumbers){
 		clearNumberBucket(numberBucket);
 		for(int i = 0; i < N_DICE; i++){
@@ -199,9 +211,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			return true;
 			default: 
 				return false;
-
 		}
-
 	}
 
 	private boolean checkThreeOfKind(){
@@ -280,5 +290,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private int[] numberBucket;
 	private int[] upperScore;
 	private int[] lowerScore;
+	private int[] bonusScore;
+	private boolean[][] usedCategories;
 
 }
