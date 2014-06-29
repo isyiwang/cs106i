@@ -102,18 +102,25 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			if(category <= SIXES){
 				//update lower score
 				upperScore[player-1] += score; 
-				display.updateScorecard(UPPER_SCORE, player, upperScore[player-1]);
+				
 			} else if(category <= CHANCE){
 				//update upper score 
 				lowerScore[player-1] += score;
-				display.updateScorecard(LOWER_SCORE, player, lowerScore[player-1]);
+				
 			}
 			//update total score
 		} else{
 			display.updateScorecard(category, player, 0);
 		}      
+		displayScores(player);
+
 	}
 
+	private void displayScores(int playerInput){
+		display.updateScorecard(UPPER_SCORE, playerInput, upperScore[playerInput-1]);
+		display.updateScorecard(LOWER_SCORE, playerInput, lowerScore[playerInput-1]);
+		display.updateScorecard(TOTAL, playerInput, lowerScore[playerInput-1]+upperScore[playerInput-1]);
+	}
 	private boolean categoryValid(int categoryInput){
 		if(categoryInput < ONES || categoryInput == UPPER_SCORE || categoryInput == UPPER_BONUS
 				|| categoryInput == LOWER_SCORE || categoryInput == TOTAL) return false;
