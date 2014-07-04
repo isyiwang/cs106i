@@ -17,8 +17,8 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	public void run() {
 		IODialog dialog = getDialog();
 		nPlayers = dialog.readInt("Enter number of players");
-		while (nPlayers > MAX_PLAYERS){
-			nPlayers = dialog.readInt("Cannot have more than 4 players, bozo. How many players? ");
+		while (nPlayers > MAX_PLAYERS || nPlayers <= 0){
+			nPlayers = dialog.readInt("Cannot have more than 4 players OR <= 0 players, bozo. How many players? ");
 		}
 		playerNames = new String[nPlayers];
 		for (int i = 1; i <= nPlayers; i++) {
@@ -36,11 +36,6 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		lowerScore = new int[MAX_PLAYERS];
 		bonusScore = new int[MAX_PLAYERS];
 		usedCategories = new boolean[MAX_PLAYERS][TOTAL];
-		//DEBUG 
-		diceDebug = new int[N_DICE];
-		for (int i = 0; i < N_DICE; i++){
-			diceDebug[i] = 5;
-		}
 	}
 
 	private void playGame() {
@@ -52,7 +47,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 				clearNumberBucket();
 			}
 		}
-		display.displayDice(diceDebug);
+		determineWinner();
 	}
 
 	private void clearNumberBucket(){
@@ -106,11 +101,9 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			//update the score
 			int score = calculateScore(category);
 			display.updateScorecard(category, player, score);
-			//debug: update scorecard for TOTALs category
 			if(category <= SIXES){
 				//update lower score
 				upperScore[player-1] += score; 
-				
 			} else if(category <= CHANCE){
 				//update upper score 
 				lowerScore[player-1] += score;
@@ -137,11 +130,11 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 	private boolean categoryValid(int categoryInput, int playerInput){
 		if(categoryInput < ONES || categoryInput == UPPER_SCORE || categoryInput == UPPER_BONUS
 				|| categoryInput == LOWER_SCORE || categoryInput == TOTAL) return false;
-		
-		// debug: need to check if category is alrady selected or not!
+		//Cannot select same category twice
 		if (usedCategories[playerInput-1][categoryInput-1] == true) return false;		
 		return true;
 	}
+	
 	private void setCategoryUsed(int categoryInput, int playerInput){
 		usedCategories[playerInput-1][categoryInput-1] = true;
 	}
@@ -226,6 +219,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 		return false;
 	}
+	
 	private boolean checkStraight(int categoryInput){
 		switch(categoryInput){
 		case SMALL_STRAIGHT: 
@@ -250,7 +244,6 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			default:
 				return false; 
 		}
-		
 	}
 	
 	private boolean checkPopulate(int start, int finish){
@@ -295,10 +288,7 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 			return calculateChanceScore();
 			default: 
 				return 0;
-
-		}
-			
-			
+		}			
 	}
 
 	private int calculateChanceScore(){
@@ -308,13 +298,27 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		}
 		return sum;
 	}
+	
+	private void determineWinner(){
+		int maxScore = 0; 
+		int winner = 0; 
+		
+		for(int i = 0; i < nPlayers; i++){
+			if(lowerScore[i]+upperScore[i]+bonusScore[i] > maxScore){
+				maxScore = lowerScore[i]+upperScore[i]+bonusScore[i];
+				winner = i;
+			}
+		}
+		
+		display.printMessage("Congrats " + playerNames[winner] + ", you won!");
+		
+	}
 /* Private instance variables */
 	private int nPlayers;
 	private String[] playerNames;
 	private YahtzeeDisplay display;
 	private RandomGenerator rgen = new RandomGenerator();
 	private int[] diceValues;
-	private int[] diceDebug;
 	private int[] numberBucket;
 	private int[] upperScore;
 	private int[] lowerScore;
