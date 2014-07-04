@@ -49,11 +49,17 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 				initialRoll(i);
 				secondAndThirdRoll(i);
 				keepScore(i);
+				clearNumberBucket();
 			}
 		}
 		display.displayDice(diceDebug);
 	}
 
+	private void clearNumberBucket(){
+		for(int i = 0; i<TOTAL_DICE_SIDES;i++){
+			numberBucket[i] = 0;
+		}
+	}
 	private void initialRoll(int player){
 		display.waitForPlayerToClickRoll(player);
 		displayFirstRoll();
@@ -221,15 +227,37 @@ public class Yahtzee extends GraphicsProgram implements YahtzeeConstants {
 		return false;
 	}
 	private boolean checkStraight(int categoryInput){
-		if(categoryInput == SMALL_STRAIGHT){
-			if(numberBucket[0] == 0 || numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
-			if(numberBucket[0] == 0 && numberBucket[1] == 0) return true;
-			if(numberBucket[0] == 0 && numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
-			if(numberBucket[TOTAL_DICE_SIDES-1] == 0 && numberBucket[TOTAL_DICE_SIDES-2] == 0) return true;
-		} else if(categoryInput == LARGE_STRAIGHT){
-			if(numberBucket[0] == 0 || numberBucket[TOTAL_DICE_SIDES-1] == 0) return true;
+		switch(categoryInput){
+		case SMALL_STRAIGHT: 
+			if(numberBucket[0] == 0 && numberBucket[1] == 0){
+				return checkPopulate(2, TOTAL_DICE_SIDES);
+			}else if(numberBucket[0] == 0 && numberBucket[TOTAL_DICE_SIDES-1] == 0){
+				return checkPopulate(1, TOTAL_DICE_SIDES-1);
+			}else if(numberBucket[TOTAL_DICE_SIDES-1] == 0 && numberBucket[TOTAL_DICE_SIDES-2] == 0){
+				return checkPopulate(0, TOTAL_DICE_SIDES-2);
+			} else if(numberBucket[1] == 0){
+				return checkPopulate(2, TOTAL_DICE_SIDES);
+			} else if(numberBucket[TOTAL_DICE_SIDES-2] == 0){
+				return checkPopulate(0, TOTAL_DICE_SIDES-2);
+			}
+		case LARGE_STRAIGHT: 
+			if(numberBucket[0] == 0){
+				return checkPopulate(1, TOTAL_DICE_SIDES);
+			} else if(numberBucket[TOTAL_DICE_SIDES-1] == 0){
+				return checkPopulate(0, TOTAL_DICE_SIDES-1);
+			}
+			return false;
+			default:
+				return false; 
 		}
-		return false;
+		
+	}
+	
+	private boolean checkPopulate(int start, int finish){
+		for(int i = start; i < finish; i++){
+			if(numberBucket[i] < 1) return false;
+		}
+		return true;
 	}
 
 	private boolean checkYahtzee(){
