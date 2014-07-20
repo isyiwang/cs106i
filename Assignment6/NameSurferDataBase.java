@@ -1,3 +1,11 @@
+import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+
 /*
  * File: NameSurferDataBase.java
  * -----------------------------
@@ -20,6 +28,18 @@ public class NameSurferDataBase implements NameSurferConstants {
  */
 	public NameSurferDataBase(String filename) {
 		// You fill this in //
+		nameInventory = new HashMap<String, NameSurferEntry>();
+		String a = null;
+		try {
+			BufferedReader in  = new BufferedReader(new FileReader(filename));
+			while((a = in.readLine()) != null){
+				NameSurferEntry entry = new NameSurferEntry(a);
+				nameInventory.put(entry.getName(), entry);
+			}
+	    } catch(Exception e) {
+	        throw new ExceptionInInitializerError(e);
+	    }
+			
 	}
 	
 /* Method: findEntry(name) */
@@ -30,7 +50,10 @@ public class NameSurferDataBase implements NameSurferConstants {
  */
 	public NameSurferEntry findEntry(String name) {
 		// You need to turn this stub into a real implementation //
-		return null;
+		if(nameInventory.containsKey(name)){
+			return nameInventory.get(name);
+		} else return null;
 	}
+	HashMap<String, NameSurferEntry> nameInventory;
 }
 

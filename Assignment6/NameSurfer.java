@@ -18,6 +18,8 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
  */
 	public void init() {
 	    // You fill this in, along with any helper methods //
+		nameDataBase = new NameSurferDataBase("a.txt");
+		
 		nameField = new JTextField(10);	
 		add(new JLabel("Name: "), SOUTH);
 		add(nameField, SOUTH);
@@ -42,8 +44,10 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 		}
 		if(e.getActionCommand().equals("Graph")){
 			println("GRAPHING");
-			test = new NameSurferEntry("Brian 1 2 3 4 5 6 7 8 9 0 11");
-			println(test.toString());
+			hashEntry = nameDataBase.findEntry(nameField.getText());
+			if(hashEntry != null){
+				println(hashEntry.toString());
+			}
 
 		}
 		if(e.getActionCommand().equals("Clear")){
@@ -54,5 +58,6 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 	private JTextField nameField;
 	private JButton graphButton;	
 	private JButton clearButton;
-	private NameSurferEntry test; 
+	private NameSurferEntry hashEntry; 
+	private NameSurferDataBase nameDataBase;
 }

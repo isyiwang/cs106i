@@ -34,7 +34,6 @@ public class NameSurferEntry implements NameSurferConstants {
 			decadeStart = decadeEnd + 1;
 			decadeEnd = line.indexOf(" ", decadeStart);
 		}
-		
 	}
 
 /* Method: getName() */
@@ -61,9 +60,6 @@ public class NameSurferEntry implements NameSurferConstants {
 		if(decade < NDECADES){
 			return nameRank[decade];
 		} else return 0;
-
-		//return 0;
-		
 	}
 
 /* Method: toString() */
